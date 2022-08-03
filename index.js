@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { useState } from 'react';
 import { render } from 'react-dom';
 import './style.css';
+import * as echarts from 'echarts';
 
 function App() {
   const imageURLs = [
@@ -24,7 +25,31 @@ function App() {
     );
     // drawImage(imageURLs[event.target.value]);
   };
-  
+
+  const chartRef = useRef(null);
+  const [options, setOptions] = useState({
+    xAxis: {
+      type: 'category',
+      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    },
+    yAxis: {
+      type: 'value',
+    },
+    series: [
+      {
+        data: [150, 230, 224, 218, 135, 147, 260],
+        type: 'line',
+      },
+    ],
+  });
+
+  useEffect(() => {
+    if (chartRef.current) {
+      const chart = echarts.init(chartRef.current);
+      chart.setOption(options);
+    }
+  }, [options, chartRef]);
+
   useEffect(() => {
     drawImage(imageURLs[value]);
   }, [value, ctx]);
@@ -35,8 +60,8 @@ function App() {
     const canvasEle = canvas.current;
     canvasEle.width = canvasEle.clientWidth;
     canvasEle.height = canvasEle.clientHeight;
-    console.log(canvasEle.width)
-    // get context of the canvas 
+    console.log(canvasEle.width);
+    // get context of the canvas
     //ctx = canvasEle.getContext('2d');
     setCtx(canvasEle.getContext('2d'));
     console.log('useEffect-ctx', ctx);
@@ -44,9 +69,9 @@ function App() {
   }, []);
 
   window.onkeydown = (e) => {
-    e.key == "ArrowRight"? setValue((prev)=>Math.min(prev+1, 2)): null
-    e.key == "ArrowLeft"? setValue((prev)=>Math.max(prev-1, 0)): null
-    console.log(e.key, value)
+    e.key == 'ArrowRight' ? setValue((prev) => Math.min(prev + 1, 2)) : null;
+    e.key == 'ArrowLeft' ? setValue((prev) => Math.max(prev - 1, 0)) : null;
+    console.log(e.key, value);
   };
   //useEffect(()=>{
   //    drawImage(imageURLs[value]);
@@ -62,14 +87,26 @@ function App() {
 
   return (
     <div className="App">
-      <input type="range" className="slider" min="0" max="2" value={value} onChange={onChange} />
+      <input
+        type="range"
+        className="slider"
+        min="0"
+        max="2"
+        value={value}
+        onChange={onChange}
+      />
       <div id="output">{value}</div>
       <canvas ref={canvas}></canvas>
+      <div
+        ref={chartRef}
+        style={{
+          width: '400px',
+          height: '300px',
+        }}
+      />
     </div>
   );
 }
-
-
 
 export default App;
 
