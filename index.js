@@ -41,6 +41,27 @@ function App() {
         type: 'line',
       },
     ],
+
+    // tooltip: {
+    //   trigger: 'item',
+    //   // formatter: '{a} <br/>{b} : {c} ({d}%)'
+    //   formatter: function (params) {
+    //     return `
+    //            <b>${params.data.type}</b></br>
+    //             ${params.value} : ${params.data.name} <br />`;
+    //   },
+    // },
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: 1,
+      // position: ['35%', '32%'],
+      // axisPointer: {
+      //   type: 'cross',
+      //   label: {
+      //     backgroundColor: '#6a7985'
+      //   }
+      // }
+    },
   });
 
   useEffect(() => {
